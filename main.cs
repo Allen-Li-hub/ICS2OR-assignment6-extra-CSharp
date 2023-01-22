@@ -1,40 +1,28 @@
 // Created by: Allen Li
-// Created on: Oct 2022
+// Created on: Dec 2022
 //
-// This program displays, "Multiplication Calculator"
+// This program displays, "Random Cat Image Generator, API"
 
 using System;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text.Json.Nodes;
+
 class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main()
     {
-        System.Random random = new System.Random();
-        double firstNumber;
-        double secondNumber;
-        Console.Write("Multiplication Calculator");
+        HttpClient client = new HttpClient();
+        string response = await client.GetStringAsync(
+            "https://api.thecatapi.com/v1/images/search"
+        );
+        // Console.WriteLine(response);
+        var jsonAsDictionary = System.Text.Json.JsonSerializer.Deserialize<Object>(response);
+        // Console.WriteLine(jsonAsDictionary);
         Console.WriteLine("");
-        Console.Write("Input two number to find out the product");
-        Console.WriteLine("");
-        Console.Write("Input the first number:");
-        firstNumber = Convert.ToDouble(Console.ReadLine());
-        Console.Write("Input the second number: ");
-        secondNumber = Convert.ToDouble(Console.ReadLine());
-        double product = 0;
-        double counter = 0;
-        while (counter < Math.Abs(secondNumber))
-        {
-            counter++;
-            product = product + Math.Abs(firstNumber);
-        }
-        if ((firstNumber < 0 && secondNumber > 0) || (secondNumber < 0 && firstNumber > 0))
-        {
-            Console.WriteLine("-" + product);
-        }
-        else
-        {
-            Console.WriteLine(product);
-        }
-        Console.WriteLine("");
-        Console.Write("/Done");
+        JsonNode forecastNode = JsonNode.Parse(response)!;
+        Console.WriteLine(response);
+        Console.WriteLine("\nThis is the random code of cat image, please take a look");
+        Console.WriteLine("\n\nDone");
     }
 }
